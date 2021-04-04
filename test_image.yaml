@@ -1,0 +1,17 @@
+image: debian
+packages:
+  - python3
+  - redis
+  - memcached libmemcached-tools
+sources:
+  - https://git.sr.ht/~sircmpwn/receptor
+tasks:
+  - setup: |
+      cd flask-session-2021
+      source venv/bin/activate
+      pip install -r test_requirements.txt
+  - build: |
+      redis-server &
+      cd flask-session-2021
+      source venv/bin/activate
+      python test_server
