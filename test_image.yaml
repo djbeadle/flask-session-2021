@@ -4,7 +4,7 @@ packages:
   - redis
   - memcached libmemcached-tools
 sources:
-  - https://git.sr.ht/~sircmpwn/receptor
+  - https://github.com/djbeadle/flask-session-2021/
 tasks:
   - setup: |
       cd flask-session-2021
