@@ -2,7 +2,11 @@ image: debian
 packages:
   - python3
   - redis
-  - memcached libmemcached-tools
+  # memcached dependencies
+  - memcached
+  - libmemcached-tools
+  # Needed to install mongodb on Debian
+  - gnupg
 sources:
   - https://github.com/djbeadle/flask-session-2021/
 tasks:
@@ -10,8 +14,14 @@ tasks:
       cd flask-session-2021
       source venv/bin/activate
       pip install -r test_requirements.txt
+      # Set up system for Mongodb (instructions for Debian 10)
+      # echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/4.4 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+      wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+      sudo apt-get update
+      sudo apt-get install -y mongodb-org
   - build: |
       redis-server &
+      sudo systemctl start mongod &
       cd flask-session-2021
       source venv/bin/activate
       python test_server
